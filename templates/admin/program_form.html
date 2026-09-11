@@ -1,0 +1,467 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                {{ "Edit Training Program" if program else "Create Training Program" }}
+            </h2>
+
+            <p class="text-muted mb-0">
+                {{ "Update the training program details." if program else "Create a new corporate training program." }}
+            </p>
+        </div>
+
+        <a href="{{ url_for('admin_programs') }}"
+           class="btn btn-outline-primary">
+
+            <i class="bi bi-arrow-left"></i>
+            Back to Programs
+
+        </a>
+
+    </div>
+
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white py-3">
+
+            <h5 class="fw-bold mb-0">
+                Program Information
+            </h5>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <form method="POST"
+                  id="programForm"
+                  novalidate>
+
+                <div class="row g-4">
+
+
+                    <!-- Program Title -->
+
+                    <div class="col-md-8">
+
+                        <label for="title"
+                               class="form-label fw-semibold">
+
+                            Program Title
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            class="form-control"
+                            placeholder="Example: Full Stack Web Development"
+                            value="{{ program.title if program else '' }}"
+                            minlength="3"
+                            maxlength="150"
+                            required
+                        >
+
+                        <div class="invalid-feedback">
+                            Please enter a valid program title.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="col-md-4">
+
+                        <label for="status"
+                               class="form-label fw-semibold">
+
+                            Status
+
+                        </label>
+
+                        <select
+                            id="status"
+                            name="status"
+                            class="form-select"
+                        >
+
+                            <option value="active"
+                                {% if not program or program.status == 'active' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Active
+                            </option>
+
+                            <option value="inactive"
+                                {% if program and program.status == 'inactive' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Description -->
+
+                    <div class="col-12">
+
+                        <label for="description"
+                               class="form-label fw-semibold">
+
+                            Program Description
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <textarea
+                            id="description"
+                            name="description"
+                            class="form-control"
+                            rows="5"
+                            placeholder="Enter detailed description of the training program..."
+                            minlength="20"
+                            maxlength="1000"
+                            required
+                        >{{ program.description if program else '' }}</textarea>
+
+                        <div class="invalid-feedback">
+                            Description must contain at least 20 characters.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Duration -->
+
+                    <div class="col-md-4">
+
+                        <label for="duration"
+                               class="form-label fw-semibold">
+
+                            Duration
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="duration"
+                            name="duration"
+                            class="form-control"
+                            placeholder="Example: 6 Weeks"
+                            value="{{ program.duration if program else '' }}"
+                            required
+                        >
+
+                        <div class="invalid-feedback">
+                            Please enter program duration.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Category -->
+
+                    <div class="col-md-4">
+
+                        <label for="category"
+                               class="form-label fw-semibold">
+
+                            Category
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <select
+                            id="category"
+                            name="category"
+                            class="form-select"
+                            required
+                        >
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+                            <option value="Development"
+                                {% if program and program.category == 'Development' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Development
+                            </option>
+
+                            <option value="Data"
+                                {% if program and program.category == 'Data' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Data Analytics
+                            </option>
+
+                            <option value="Cloud"
+                                {% if program and program.category == 'Cloud' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Cloud Computing
+                            </option>
+
+                            <option value="Cyber Security"
+                                {% if program and program.category == 'Cyber Security' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Cyber Security
+                            </option>
+
+                            <option value="Soft Skills"
+                                {% if program and program.category == 'Soft Skills' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Soft Skills
+                            </option>
+
+                        </select>
+
+                        <div class="invalid-feedback">
+                            Please select a category.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Skill Level -->
+
+                    <div class="col-md-4">
+
+                        <label for="skill_level"
+                               class="form-label fw-semibold">
+
+                            Skill Level
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <select
+                            id="skill_level"
+                            name="skill_level"
+                            class="form-select"
+                            required
+                        >
+
+                            <option value="">
+                                Select Skill Level
+                            </option>
+
+                            <option value="Beginner"
+                                {% if program and program.skill_level == 'Beginner' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Beginner
+                            </option>
+
+                            <option value="Intermediate"
+                                {% if program and program.skill_level == 'Intermediate' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Intermediate
+                            </option>
+
+                            <option value="Advanced"
+                                {% if program and program.skill_level == 'Advanced' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Advanced
+                            </option>
+
+                        </select>
+
+                        <div class="invalid-feedback">
+                            Please select a skill level.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Trainer -->
+
+                    <div class="col-md-6">
+
+                        <label for="trainer_id"
+                               class="form-label fw-semibold">
+
+                            Assign Trainer
+
+                        </label>
+
+                        <select
+                            id="trainer_id"
+                            name="trainer_id"
+                            class="form-select"
+                        >
+
+                            <option value="">
+                                -- Not Assigned --
+                            </option>
+
+                            {% for trainer in trainers %}
+
+                            <option
+                                value="{{ trainer.id }}"
+                                {% if program and program.trainer_id == trainer.id %}
+                                    selected
+                                {% endif %}
+                            >
+
+                                {{ trainer.name }}
+
+                                {% if trainer.expertise %}
+                                    — {{ trainer.expertise }}
+                                {% endif %}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                        <small class="text-muted">
+                            You can assign or change the trainer later.
+                        </small>
+
+                    </div>
+
+
+                    <!-- Training Mode -->
+
+                    <div class="col-md-6">
+
+                        <label for="mode"
+                               class="form-label fw-semibold">
+
+                            Training Mode
+
+                        </label>
+
+                        <select
+                            id="mode"
+                            name="mode"
+                            class="form-select"
+                        >
+
+                            <option value="Online"
+                                {% if program and program.mode == 'Online' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Online
+                            </option>
+
+                            <option value="Offline"
+                                {% if program and program.mode == 'Offline' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Offline
+                            </option>
+
+                            <option value="Hybrid"
+                                {% if program and program.mode == 'Hybrid' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Hybrid
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Learning Objectives -->
+
+                    <div class="col-12">
+
+                        <label for="objectives"
+                               class="form-label fw-semibold">
+
+                            Learning Objectives
+
+                        </label>
+
+                        <textarea
+                            id="objectives"
+                            name="objectives"
+                            class="form-control"
+                            rows="4"
+                            placeholder="Example:
+• Learn Python fundamentals
+• Build web applications
+• Work with databases
+• Deploy applications"
+                        >{{ program.objectives if program and program.objectives else '' }}</textarea>
+
+                    </div>
+
+
+                    <!-- Buttons -->
+
+                    <div class="col-12">
+
+                        <hr>
+
+                        <div class="d-flex justify-content-end gap-2">
+
+                            <a
+                                href="{{ url_for('admin_programs') }}"
+                                class="btn btn-outline-secondary"
+                            >
+                                Cancel
+                            </a>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary px-4"
+                            >
+
+                                <i class="bi bi-check-lg"></i>
+
+                                {{ "Update Program" if program else "Create Program" }}
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

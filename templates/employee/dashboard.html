@@ -1,0 +1,423 @@
+{% extends "base.html" %}
+
+{% block title %}Employee Dashboard - SkillBridge{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Header -->
+    <div class="page-header d-flex justify-content-between align-items-center">
+        <div>
+            <h2>
+                <i class="bi bi-speedometer2 text-primary"></i>
+                Employee Dashboard
+            </h2>
+            <p class="text-muted mb-0">
+                Track your learning, assessments, skills and certificates.
+            </p>
+        </div>
+
+        <span class="badge bg-primary fs-6">
+            <i class="bi bi-person"></i> Employee
+        </span>
+    </div>
+
+
+    <!-- Statistics -->
+    <div class="row g-4 mb-4">
+
+        <!-- Available Courses -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <div>
+                            <p class="text-muted mb-1">
+                                Available Courses
+                            </p>
+
+                            <div class="stat-number">
+                                {{ available_count|default(0) }}
+                            </div>
+                        </div>
+
+                        <div class="dashboard-icon bg-primary">
+                            <i class="bi bi-book"></i>
+                        </div>
+
+                    </div>
+
+                    <a href="{{ url_for('employee_courses') }}"
+                       class="text-decoration-none">
+                        Browse Courses →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- My Courses -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <div>
+                            <p class="text-muted mb-1">
+                                My Courses
+                            </p>
+
+                            <div class="stat-number">
+                                {{ enrolled_count|default(0) }}
+                            </div>
+                        </div>
+
+                        <div class="dashboard-icon bg-info">
+                            <i class="bi bi-journal-check"></i>
+                        </div>
+
+                    </div>
+
+                    <a href="{{ url_for('employee_my_courses') }}"
+                       class="text-decoration-none text-info">
+                        View My Courses →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Skills -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <div>
+                            <p class="text-muted mb-1">
+                                Skills Acquired
+                            </p>
+
+                            <div class="stat-number">
+                                {{ skill_count|default(0) }}
+                            </div>
+                        </div>
+
+                        <div class="dashboard-icon bg-success">
+                            <i class="bi bi-lightbulb"></i>
+                        </div>
+
+                    </div>
+
+                    <a href="{{ url_for('employee_skills') }}"
+                       class="text-decoration-none text-success">
+                        View Skills →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Certificates -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <div>
+                            <p class="text-muted mb-1">
+                                Certificates
+                            </p>
+
+                            <div class="stat-number">
+                                {{ certificate_count|default(0) }}
+                            </div>
+                        </div>
+
+                        <div class="dashboard-icon bg-warning">
+                            <i class="bi bi-award"></i>
+                        </div>
+
+                    </div>
+
+                    <a href="{{ url_for('employee_certificates') }}"
+                       class="text-decoration-none text-warning">
+                        View Certificates →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessments -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <p class="text-muted mb-1">
+                                Assessments
+                            </p>
+
+                            <div class="stat-number">
+                                {{ assessment_count|default(0) }}
+                            </div>
+                        </div>
+
+                        <div class="dashboard-icon bg-danger">
+                            <i class="bi bi-clipboard-check"></i>
+                        </div>
+                    </div>
+
+                    <a href="{{ url_for('employee_my_courses') }}"
+                       class="text-decoration-none text-danger">
+                        View Assessments →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Learning Progress -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 h-100">
+
+                <div class="card-header bg-white">
+
+                    <h5 class="fw-bold mb-1">
+                        <i class="bi bi-graph-up-arrow text-primary"></i>
+                        Learning Progress
+                    </h5>
+
+                    <small class="text-muted">
+                        Continue your training journey
+                    </small>
+
+                </div>
+
+                <div class="card-body">
+
+                    {% if enrollments %}
+
+                        {% for enrollment in enrollments %}
+
+                        <div class="mb-4">
+
+                            <div class="d-flex justify-content-between mb-2">
+
+                                <div>
+                                    <strong>
+                                        {{ enrollment.title }}
+                                    </strong>
+                                </div>
+
+                                <span class="fw-bold text-primary">
+                                    {{ enrollment.progress|default(0) }}%
+                                </span>
+
+                            </div>
+
+                            <div class="progress mb-2">
+                                <div
+                                    class="progress-bar"
+                                    role="progressbar"
+                                    style="width: {{ enrollment.progress|default(0) }}%"
+                                >
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+
+                                <small class="text-muted">
+                                    Status:
+                                    {{ enrollment.status|default('Enrolled') }}
+                                </small>
+
+                                {% if enrollment.progress|default(0) >= 100 %}
+
+                                <span class="badge bg-success">
+                                    Completed
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge bg-primary">
+                                    In Progress
+                                </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="empty-state py-4">
+
+                            <i class="bi bi-journal-x"></i>
+
+                            <h5 class="fw-bold">
+                                No Courses Yet
+                            </h5>
+
+                            <p class="text-muted">
+                                Start learning by enrolling in a training program.
+                            </p>
+
+                            <a
+                                href="{{ url_for('employee_courses') }}"
+                                class="btn btn-primary"
+                            >
+                                <i class="bi bi-search"></i>
+                                Browse Courses
+                            </a>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+<!--  -->
+
+        <!-- Quick Actions -->
+        <div class="col-lg-4">
+
+            <div class="card border-0 h-100">
+
+                <div class="card-header bg-white">
+
+                    <h5 class="fw-bold mb-0">
+                        <i class="bi bi-lightning-charge text-warning"></i>
+                        Quick Actions
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="d-grid gap-3">
+
+                        <a
+                            href="{{ url_for('employee_courses') }}"
+                            class="btn btn-primary py-3"
+                        >
+                            <i class="bi bi-search"></i>
+                            <br>
+                            Browse Training Programs
+                        </a>
+
+                        <a
+                            href="{{ url_for('employee_my_courses') }}"
+                            class="btn btn-outline-primary py-3"
+                        >
+                            <i class="bi bi-journal-check"></i>
+                            <br>
+                            Continue My Courses
+                        </a>
+
+                        <a
+                            href="{{ url_for('employee_my_courses') }}"
+                            class="btn btn-outline-danger py-3"
+                        >
+                            <i class="bi bi-clipboard-check"></i>
+                            <br>
+                            Take Assessment
+                        </a>
+
+                        <a
+                            href="{{ url_for('employee_skills') }}"
+                            class="btn btn-outline-success py-3"
+                        >
+                            <i class="bi bi-lightbulb"></i>
+                            <br>
+                            View My Skills
+                        </a>
+
+                        <a
+                            href="{{ url_for('employee_certificates') }}"
+                            class="btn btn-outline-warning py-3"
+                        >
+                            <i class="bi bi-award"></i>
+                            <br>
+                            My Certificates
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Welcome / Learning Journey -->
+    <div class="card border-0">
+
+        <div class="card-body">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-8">
+
+                    <span class="badge bg-primary-subtle text-primary mb-2">
+                        SkillBridge Learning Journey
+                    </span>
+
+                    <h4 class="fw-bold">
+                        Build your skills. Complete your training.
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        Enroll in programs, update your course progress,
+                        complete assessments and earn certificates.
+                    </p>
+
+                </div>
+
+                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+
+                    <a
+                        href="{{ url_for('employee_courses') }}"
+                        class="btn btn-primary"
+                    >
+                        Start Learning
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

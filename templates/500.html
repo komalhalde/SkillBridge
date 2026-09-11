@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error - SkillBridge{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body p-5">
+
+                    <!-- Error Icon -->
+                    <div class="mb-4">
+                        <i class="bi bi-exclamation-octagon-fill text-danger"
+                           style="font-size: 5rem;"></i>
+                    </div>
+
+                    <!-- Error Code -->
+                    <h1 class="display-1 fw-bold text-danger">
+                        500
+                    </h1>
+
+                    <h3 class="fw-bold mb-3">
+                        Internal Server Error
+                    </h3>
+
+                    <p class="text-muted mb-4">
+                        Something went wrong on the server.
+                        Please try again after a moment.
+                    </p>
+
+                    <!-- Actions -->
+                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+                        {% if session.get('user_id') %}
+
+                            <a href="{{ url_for('dashboard') }}"
+                               class="btn btn-primary">
+                                <i class="bi bi-house-fill"></i>
+                                Go to Dashboard
+                            </a>
+
+                        {% else %}
+
+                            <a href="{{ url_for('login') }}"
+                               class="btn btn-primary">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                                Go to Login
+                            </a>
+
+                        {% endif %}
+
+                        <button onclick="location.reload()"
+                                class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-clockwise"></i>
+                            Try Again
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

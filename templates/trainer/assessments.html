@@ -1,0 +1,402 @@
+{% extends "base.html" %}
+
+{% block title %}My Assessments{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                My Assessments
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage assessments for your assigned training programs
+            </p>
+        </div>
+
+        <a href="{{ url_for('trainer_dashboard') }}"
+           class="btn btn-outline-secondary">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Total Assessments
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        {{ assessments|length }}
+                    </h3>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Active Assessments
+                    </small>
+
+                    <h3 class="fw-bold text-success mb-0">
+
+                        {% set active_count = 0 %}
+
+                        {% for assessment in assessments %}
+                            {% if assessment.is_active %}
+                                {% set active_count = active_count + 1 %}
+                            {% endif %}
+                        {% endfor %}
+
+                        {{ active_count }}
+
+                    </h3>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Assigned Programs
+                    </small>
+
+                    <h3 class="fw-bold text-primary mb-0">
+
+                        {% set program_ids = [] %}
+
+                        {% for assessment in assessments %}
+
+                            {% if assessment.program_id not in program_ids %}
+                                {% set _ = program_ids.append(assessment.program_id) %}
+                            {% endif %}
+
+                        {% endfor %}
+
+                        {{ program_ids|length }}
+
+                    </h3>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Action Bar -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+                    <h5 class="fw-bold mb-1">
+                        Assessment Management
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        Create and manage MCQ assessments
+                    </p>
+                </div>
+<a href="{{ url_for('trainer_assessment_create') }}"
+   class="btn btn-primary">
+    <i class="bi bi-plus-circle me-1"></i>
+    Create Assessment
+</a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Assessment List -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white py-3">
+
+            <h5 class="fw-bold mb-0">
+                Assessment List
+            </h5>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            {% if assessments %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Assessment</th>
+
+                            <th>Training Program</th>
+
+                            <th>Questions</th>
+
+                            <th>Pass Score</th>
+
+                            <th>Status</th>
+
+                            <th>Created</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for assessment in assessments %}
+
+                        <tr>
+
+                            <!-- Number -->
+                            <td>
+                                {{ loop.index }}
+                            </td>
+
+
+                            <!-- Assessment -->
+                            <td>
+
+                                <div class="fw-semibold">
+                                    {{ assessment.title }}
+                                </div>
+
+                                {% if assessment.description %}
+
+                                    <small class="text-muted">
+                                        {{ assessment.description[:80] }}
+
+                                        {% if assessment.description|length > 80 %}
+                                            ...
+                                        {% endif %}
+                                    </small>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Program -->
+                            <td>
+
+                                {% if assessment.program_title %}
+
+                                    {{ assessment.program_title }}
+
+                                {% elif assessment.training_title %}
+
+                                    {{ assessment.training_title }}
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        Program #{{ assessment.program_id }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Questions -->
+                            <td>
+
+                                {% if assessment.question_count is defined %}
+
+                                    <span class="badge bg-info">
+                                        {{ assessment.question_count }}
+                                    </span>
+
+                                {% elif assessment.total_questions is defined %}
+
+                                    <span class="badge bg-info">
+                                        {{ assessment.total_questions }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        -
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Passing Score -->
+                            <td>
+
+                                {% if assessment.passing_score is defined %}
+
+                                    {{ assessment.passing_score }}%
+
+                                {% elif assessment.pass_score is defined %}
+
+                                    {{ assessment.pass_score }}%
+
+                                {% else %}
+
+                                    50%
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Status -->
+                            <td>
+
+                                {% if assessment.is_active %}
+
+                                    <span class="badge bg-success">
+                                        Active
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        Inactive
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Created -->
+                            <td>
+
+                                {% if assessment.created_at %}
+
+                                    <small>
+                                        {{ assessment.created_at }}
+                                    </small>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        -
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Actions -->
+                            <td>
+
+                                <div class="d-flex gap-2 flex-wrap">
+
+                                    <!-- Questions -->
+                                    <a href="{{ url_for(
+                                        'assessment_questions',
+                                        assessment_id=assessment.id
+                                    ) }}"
+                                       class="btn btn-sm btn-outline-primary">
+
+                                        Questions
+
+                                    </a>
+
+
+                                    <!-- Results -->
+                                    <a href="{{ url_for(
+                                        'trainer_results',
+                                        assessment_id=assessment.id
+                                    ) }}"
+                                       class="btn btn-sm btn-outline-success">
+
+                                        Results
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+            <!-- Empty State -->
+
+            <div class="text-center py-5">
+
+                <div class="display-4 mb-3">
+                    📝
+                </div>
+
+                <h5 class="fw-bold">
+                    No assessments found
+                </h5>
+
+                <p class="text-muted mb-4">
+                    You haven't created any assessments yet.
+                </p>
+
+                <a href="{{ url_for('create_assessment') }}"
+                   class="btn btn-primary">
+
+                    + Create Your First Assessment
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

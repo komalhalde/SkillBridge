@@ -1,0 +1,1227 @@
+{% extends "base.html" %}
+
+{% block title %}SkillBridge | Employee Training Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ================================
+       SKILLBRIDGE HOME PAGE
+       ================================ */
+
+    .home-page {
+        min-height: calc(100vh - 70px);
+        background:
+            radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.12), transparent 30%),
+            radial-gradient(circle at 90% 10%, rgba(99, 102, 241, 0.12), transparent 30%),
+            #f8fafc;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+        padding: 90px 20px 80px;
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #2563eb 100%);
+        color: white;
+    }
+
+    .hero-section::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        top: -180px;
+        right: -100px;
+    }
+
+    .hero-section::after {
+        content: "";
+        position: absolute;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        bottom: -150px;
+        left: -80px;
+    }
+
+    .hero-container {
+        position: relative;
+        z-index: 2;
+        max-width: 1180px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 60px;
+        align-items: center;
+    }
+
+    .hero-content {
+        max-width: 680px;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 15px;
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 30px;
+        background: rgba(255,255,255,0.08);
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 24px;
+        backdrop-filter: blur(8px);
+    }
+
+    .hero-badge span {
+        width: 8px;
+        height: 8px;
+        background: #4ade80;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .hero-title {
+        font-size: clamp(42px, 6vw, 68px);
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -2px;
+        margin: 0 0 24px;
+    }
+
+    .hero-title .highlight {
+        color: #93c5fd;
+    }
+
+    .hero-description {
+        font-size: 19px;
+        line-height: 1.7;
+        color: #dbeafe;
+        max-width: 620px;
+        margin-bottom: 34px;
+    }
+
+    .hero-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .hero-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 14px 23px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 700;
+        transition: all 0.25s ease;
+    }
+
+    .hero-btn-primary {
+        background: white;
+        color: #1d4ed8;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+    }
+
+    .hero-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+        color: #1e40af;
+    }
+
+    .hero-btn-secondary {
+        color: white;
+        border: 1px solid rgba(255,255,255,0.3);
+        background: rgba(255,255,255,0.08);
+    }
+
+    .hero-btn-secondary:hover {
+        background: rgba(255,255,255,0.15);
+        transform: translateY(-2px);
+        color: white;
+    }
+
+    /* Hero Visual */
+    .hero-visual {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .dashboard-preview {
+        width: 100%;
+        max-width: 450px;
+        background: rgba(255,255,255,0.97);
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 30px 70px rgba(0,0,0,0.3);
+        transform: rotate(1deg);
+    }
+
+    .preview-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 4px 15px;
+    }
+
+    .preview-brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: #172554;
+        font-weight: 800;
+        font-size: 15px;
+    }
+
+    .preview-logo {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+    }
+
+    .preview-dots {
+        display: flex;
+        gap: 5px;
+    }
+
+    .preview-dots i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #cbd5e1;
+    }
+
+    .preview-welcome {
+        padding: 20px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #eff6ff, #eef2ff);
+        margin-bottom: 15px;
+    }
+
+    .preview-welcome small {
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .preview-welcome h3 {
+        margin: 5px 0 0;
+        color: #172554;
+        font-size: 20px;
+    }
+
+    .preview-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .preview-stat {
+        padding: 14px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 11px;
+        text-align: center;
+        background: white;
+    }
+
+    .preview-stat strong {
+        display: block;
+        font-size: 20px;
+        color: #1e3a8a;
+    }
+
+    .preview-stat span {
+        font-size: 10px;
+        color: #64748b;
+    }
+
+    .preview-course {
+        padding: 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 11px;
+        margin-bottom: 10px;
+    }
+
+    .preview-course-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 9px;
+    }
+
+    .preview-course-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: #334155;
+    }
+
+    .preview-course-status {
+        font-size: 10px;
+        color: #16a34a;
+        font-weight: 700;
+    }
+
+    .progress-bar {
+        height: 7px;
+        background: #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        width: 72%;
+        height: 100%;
+        background: linear-gradient(90deg, #2563eb, #4f46e5);
+        border-radius: 10px;
+    }
+
+    /* Stats */
+    .stats-section {
+        padding: 55px 20px;
+        background: white;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .stats-container {
+        max-width: 1050px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .stat-number {
+        font-size: 34px;
+        font-weight: 800;
+        color: #1e3a8a;
+        margin-bottom: 4px;
+    }
+
+    .stat-label {
+        font-size: 14px;
+        color: #64748b;
+    }
+
+    /* Section Common */
+    .section {
+        padding: 85px 20px;
+    }
+
+    .section-container {
+        max-width: 1150px;
+        margin: 0 auto;
+    }
+
+    .section-heading {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto 50px;
+    }
+
+    .section-tag {
+        display: inline-block;
+        padding: 7px 13px;
+        border-radius: 20px;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 13px;
+    }
+
+    .section-heading h2 {
+        font-size: 38px;
+        line-height: 1.2;
+        color: #0f172a;
+        margin: 0 0 14px;
+        letter-spacing: -1px;
+    }
+
+    .section-heading p {
+        margin: 0;
+        color: #64748b;
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    /* Features */
+    .features-section {
+        background: #f8fafc;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+    }
+
+    .feature-card {
+        background: white;
+        padding: 30px;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        transition: all 0.25s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(15,23,42,0.08);
+        border-color: #bfdbfe;
+    }
+
+    .feature-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 13px;
+        background: #eff6ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 23px;
+        margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+        margin: 0 0 10px;
+        color: #0f172a;
+        font-size: 18px;
+    }
+
+    .feature-card p {
+        margin: 0;
+        color: #64748b;
+        line-height: 1.65;
+        font-size: 14px;
+    }
+
+    /* How it Works */
+    .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+
+    .step-card {
+        position: relative;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .step-number {
+        width: 50px;
+        height: 50px;
+        margin: 0 auto 18px;
+        border-radius: 50%;
+        background: #1d4ed8;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 17px;
+        box-shadow: 0 8px 20px rgba(37,99,235,0.25);
+    }
+
+    .step-card h3 {
+        font-size: 17px;
+        color: #0f172a;
+        margin: 0 0 8px;
+    }
+
+    .step-card p {
+        font-size: 13px;
+        line-height: 1.6;
+        color: #64748b;
+        margin: 0;
+    }
+
+    /* Roles */
+    .roles-section {
+        background: #0f172a;
+        color: white;
+    }
+
+    .roles-section .section-heading h2 {
+        color: white;
+    }
+
+    .roles-section .section-heading p {
+        color: #94a3b8;
+    }
+
+    .roles-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+    }
+
+    .role-card {
+        padding: 30px;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 16px;
+        background: rgba(255,255,255,0.04);
+    }
+
+    .role-card-icon {
+        font-size: 28px;
+        margin-bottom: 18px;
+    }
+
+    .role-card h3 {
+        margin: 0 0 10px;
+        font-size: 19px;
+    }
+
+    .role-card p {
+        color: #94a3b8;
+        font-size: 14px;
+        line-height: 1.65;
+        margin: 0 0 18px;
+    }
+
+    .role-card ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .role-card li {
+        padding: 7px 0;
+        color: #cbd5e1;
+        font-size: 13px;
+    }
+
+    .role-card li::before {
+        content: "✓";
+        color: #60a5fa;
+        font-weight: bold;
+        margin-right: 8px;
+    }
+
+    /* CTA */
+    .cta-section {
+        padding: 85px 20px;
+        background: white;
+    }
+
+    .cta-box {
+        max-width: 950px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 55px 30px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, #eff6ff, #eef2ff);
+        border: 1px solid #dbeafe;
+    }
+
+    .cta-box h2 {
+        margin: 0 0 14px;
+        color: #172554;
+        font-size: 36px;
+    }
+
+    .cta-box p {
+        max-width: 600px;
+        margin: 0 auto 25px;
+        color: #64748b;
+        line-height: 1.7;
+    }
+
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 13px 22px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        transition: 0.25s ease;
+    }
+
+    .cta-login {
+        background: #1d4ed8;
+        color: white;
+    }
+
+    .cta-login:hover {
+        background: #1e40af;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .cta-register {
+        background: white;
+        color: #1d4ed8;
+        border: 1px solid #bfdbfe;
+    }
+
+    .cta-register:hover {
+        background: #eff6ff;
+        color: #1e40af;
+    }
+
+    /* Footer */
+    .home-footer {
+        padding: 28px 20px;
+        background: #020617;
+        color: #94a3b8;
+        text-align: center;
+        font-size: 13px;
+    }
+
+    .footer-brand {
+        color: white;
+        font-weight: 800;
+        margin-bottom: 7px;
+        font-size: 17px;
+    }
+
+    .footer-text {
+        margin: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+        .hero-container {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .hero-content {
+            margin: 0 auto;
+        }
+
+        .hero-description {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            justify-content: center;
+        }
+
+        .hero-visual {
+            margin-top: 20px;
+        }
+
+        .stats-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .features-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .steps-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .roles-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .hero-section {
+            padding: 65px 16px;
+        }
+
+        .hero-title {
+            font-size: 42px;
+            letter-spacing: -1px;
+        }
+
+        .hero-description {
+            font-size: 16px;
+        }
+
+        .dashboard-preview {
+            max-width: 350px;
+        }
+
+        .section {
+            padding: 65px 16px;
+        }
+
+        .section-heading h2 {
+            font-size: 30px;
+        }
+
+        .stats-container {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .features-grid,
+        .steps-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .feature-card {
+            padding: 24px;
+        }
+
+        .cta-box {
+            padding: 40px 20px;
+        }
+
+        .cta-box h2 {
+            font-size: 29px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="home-page">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero-section">
+        <div class="hero-container">
+
+            <div class="hero-content">
+
+                <div class="hero-badge">
+                    <span></span>
+                    Smart Employee Training Platform
+                </div>
+
+                <h1 class="hero-title">
+                    Build Skills.<br>
+                    Track <span class="highlight">Progress.</span><br>
+                    Grow Together.
+                </h1>
+
+                <p class="hero-description">
+                    SkillBridge is a complete training management platform
+                    that connects employees, trainers, and administrators
+                    in one simple and powerful system.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="{{ url_for('login') }}"
+                       class="hero-btn hero-btn-primary">
+                        🔐 Login to SkillBridge
+                    </a>
+
+                    <a href="{{ url_for('register') }}"
+                       class="hero-btn hero-btn-secondary">
+                        👤 Register as Employee
+                    </a>
+                </div>
+
+            </div>
+
+
+            <!-- Dashboard Preview -->
+            <div class="hero-visual">
+
+                <div class="dashboard-preview">
+
+                    <div class="preview-topbar">
+
+                        <div class="preview-brand">
+                            <div class="preview-logo">S</div>
+                            SkillBridge
+                        </div>
+
+                        <div class="preview-dots">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </div>
+
+                    </div>
+
+                    <div class="preview-welcome">
+                        <small>Employee Dashboard</small>
+                        <h3>Welcome back 👋</h3>
+                    </div>
+
+                    <div class="preview-stats">
+
+                        <div class="preview-stat">
+                            <strong>04</strong>
+                            <span>Courses</span>
+                        </div>
+
+                        <div class="preview-stat">
+                            <strong>72%</strong>
+                            <span>Progress</span>
+                        </div>
+
+                        <div class="preview-stat">
+                            <strong>03</strong>
+                            <span>Skills</span>
+                        </div>
+
+                    </div>
+
+                    <div class="preview-course">
+
+                        <div class="preview-course-header">
+                            <span class="preview-course-title">
+                                Web Development
+                            </span>
+
+                            <span class="preview-course-status">
+                                In Progress
+                            </span>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="preview-course">
+
+                        <div class="preview-course-header">
+                            <span class="preview-course-title">
+                                Python Programming
+                            </span>
+
+                            <span class="preview-course-status">
+                                Completed
+                            </span>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill"
+                                 style="width:100%;">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ================= STATS ================= -->
+    <section class="stats-section">
+
+        <div class="stats-container">
+
+            <div class="stat-item">
+                <div class="stat-number">3</div>
+                <div class="stat-label">User Roles</div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Progress Tracking</div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-number">MCQ</div>
+                <div class="stat-label">Online Assessments</div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-number">PDF</div>
+                <div class="stat-label">Certificates</div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FEATURES ================= -->
+    <section class="section features-section">
+
+        <div class="section-container">
+
+            <div class="section-heading">
+
+                <span class="section-tag">Platform Features</span>
+
+                <h2>
+                    Everything You Need to Manage Training
+                </h2>
+
+                <p>
+                    SkillBridge provides a centralized system for
+                    managing employees, trainers, courses,
+                    assessments, skills, results and certificates.
+                </p>
+
+            </div>
+
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">📚</div>
+
+                    <h3>Training Programs</h3>
+
+                    <p>
+                        Create, update and manage professional
+                        training programs with descriptions,
+                        duration and required skills.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">👨‍🏫</div>
+
+                    <h3>Trainer Management</h3>
+
+                    <p>
+                        Assign trainers to training programs and
+                        allow trainers to manage assessments and
+                        monitor employee performance.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">📈</div>
+
+                    <h3>Progress Tracking</h3>
+
+                    <p>
+                        Employees can update their course progress
+                        and easily monitor their learning journey
+                        from their dashboard.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">📝</div>
+
+                    <h3>MCQ Assessments</h3>
+
+                    <p>
+                        Trainers can create multiple-choice
+                        assessments and employees can complete
+                        them online.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">🎯</div>
+
+                    <h3>Automatic Results</h3>
+
+                    <p>
+                        Assessment scores, percentages and
+                        pass/fail status are calculated
+                        automatically.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">🏆</div>
+
+                    <h3>Digital Certificates</h3>
+
+                    <p>
+                        Successful employees can receive
+                        downloadable PDF certificates and
+                        verify their achievements.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= HOW IT WORKS ================= -->
+    <section class="section">
+
+        <div class="section-container">
+
+            <div class="section-heading">
+
+                <span class="section-tag">How It Works</span>
+
+                <h2>
+                    Simple Learning Workflow
+                </h2>
+
+                <p>
+                    SkillBridge makes employee training simple,
+                    structured and measurable.
+                </p>
+
+            </div>
+
+
+            <div class="steps-grid">
+
+                <div class="step-card">
+
+                    <div class="step-number">1</div>
+
+                    <h3>Choose a Course</h3>
+
+                    <p>
+                        Employees explore available training
+                        programs and enroll in the courses
+                        they need.
+                    </p>
+
+                </div>
+
+
+                <div class="step-card">
+
+                    <div class="step-number">2</div>
+
+                    <h3>Learn & Track</h3>
+
+                    <p>
+                        Employees complete training and
+                        continuously update their course
+                        progress.
+                    </p>
+
+                </div>
+
+
+                <div class="step-card">
+
+                    <div class="step-number">3</div>
+
+                    <h3>Take Assessment</h3>
+
+                    <p>
+                        Employees complete MCQ assessments
+                        created and managed by trainers.
+                    </p>
+
+                </div>
+
+
+                <div class="step-card">
+
+                    <div class="step-number">4</div>
+
+                    <h3>Earn Certificate</h3>
+
+                    <p>
+                        Employees who successfully complete
+                        assessments can access their digital
+                        certificate.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= USER ROLES ================= -->
+    <section class="section roles-section">
+
+        <div class="section-container">
+
+            <div class="section-heading">
+
+                <span class="section-tag">
+                    Built for Everyone
+                </span>
+
+                <h2>
+                    One Platform. Three Powerful Roles.
+                </h2>
+
+                <p>
+                    Each user gets a dedicated dashboard and
+                    tools designed specifically for their role.
+                </p>
+
+            </div>
+
+
+            <div class="roles-grid">
+
+                <!-- Admin -->
+                <div class="role-card">
+
+                    <div class="role-card-icon">🛡️</div>
+
+                    <h3>Administrator</h3>
+
+                    <p>
+                        Manage the complete training ecosystem
+                        from a centralized dashboard.
+                    </p>
+
+                    <ul>
+                        <li>Manage employees</li>
+                        <li>Manage trainers</li>
+                        <li>Create training programs</li>
+                        <li>Assign trainers</li>
+                        <li>View results</li>
+                        <li>Issue certificates</li>
+                    </ul>
+
+                </div>
+
+
+                <!-- Trainer -->
+                <div class="role-card">
+
+                    <div class="role-card-icon">👨‍🏫</div>
+
+                    <h3>Trainer</h3>
+
+                    <p>
+                        Manage assigned programs and evaluate
+                        employee learning performance.
+                    </p>
+
+                    <ul>
+                        <li>View assigned programs</li>
+                        <li>Create assessments</li>
+                        <li>Add MCQ questions</li>
+                        <li>Manage assessments</li>
+                        <li>View employee results</li>
+                    </ul>
+
+                </div>
+
+
+                <!-- Employee -->
+                <div class="role-card">
+
+                    <div class="role-card-icon">👩‍💻</div>
+
+                    <h3>Employee</h3>
+
+                    <p>
+                        Learn new skills, track progress and
+                        earn certificates through training.
+                    </p>
+
+                    <ul>
+                        <li>Browse courses</li>
+                        <li>Enroll in programs</li>
+                        <li>Track progress</li>
+                        <li>Take assessments</li>
+                        <li>Track skills</li>
+                        <li>Download certificates</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CTA ================= -->
+    <section class="cta-section">
+
+        <div class="cta-box">
+
+            <h2>
+                Ready to Start Your Learning Journey?
+            </h2>
+
+            <p>
+                Join SkillBridge and make employee training
+                more organized, measurable and effective.
+            </p>
+
+            <div class="cta-buttons">
+
+                <a href="{{ url_for('login') }}"
+                   class="cta-btn cta-login">
+                    🔐 Login
+                </a>
+
+                <a href="{{ url_for('register') }}"
+                   class="cta-btn cta-register">
+                    👤 Register as Employee
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="home-footer">
+
+        <div class="footer-brand">
+            SkillBridge
+        </div>
+
+        <p class="footer-text">
+            Employee Training & Skill Management System
+            <br>
+            © 2026 SkillBridge. All rights reserved.
+        </p>
+
+    </footer>
+
+</div>
+
+{% endblock %}

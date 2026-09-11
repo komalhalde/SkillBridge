@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}My Skills{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">My Skills</h2>
+            <p class="text-muted mb-0">
+                View the skills you have developed through completed training.
+            </p>
+        </div>
+
+        <a href="{{ url_for('employee_dashboard') }}"
+           class="btn btn-secondary">
+            ← Dashboard
+        </a>
+    </div>
+
+
+    {% if skills %}
+
+    <div class="row">
+
+        {% for skill in skills %}
+
+        <div class="col-md-6 col-lg-4 mb-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <!-- Skill Icon -->
+                    <div class="mb-3">
+                        <span style="font-size: 35px;">🎯</span>
+                    </div>
+
+
+                    <!-- Skill Name -->
+                    <h5 class="fw-bold">
+
+                        {{ skill.skill_name
+                           if skill.skill_name is defined
+                           else skill.name
+                           if skill.name is defined
+                           else 'Skill' }}
+
+                    </h5>
+
+
+                    <!-- Program -->
+                    <p class="text-muted mb-2">
+
+                        <strong>Program:</strong>
+
+                        {{ skill.program_title
+                           if skill.program_title is defined
+                           else skill.program_name
+                           if skill.program_name is defined
+                           else 'Training Program' }}
+
+                    </p>
+
+
+                    <!-- Level -->
+                    {% set level =
+                        skill.level
+                        if skill.level is defined
+                        else 'Completed'
+                    %}
+
+                    <p class="mb-2">
+
+                        <strong>Level:</strong>
+
+                        {% if level|string|lower == 'advanced' %}
+
+                            <span class="badge bg-danger">
+                                Advanced
+                            </span>
+
+                        {% elif level|string|lower == 'intermediate' %}
+
+                            <span class="badge bg-warning text-dark">
+                                Intermediate
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-success">
+                                {{ level }}
+                            </span>
+
+                        {% endif %}
+
+                    </p>
+
+
+                    <!-- Score -->
+                    {% if skill.score is defined %}
+
+                    <p class="mb-2">
+                        <strong>Assessment Score:</strong>
+                        {{ skill.score }}
+                    </p>
+
+                    {% endif %}
+
+
+                    <!-- Percentage -->
+                    {% if skill.percentage is defined %}
+
+                    <p class="mb-2">
+                        <strong>Percentage:</strong>
+
+                        <span class="badge bg-info text-dark">
+                            {{ skill.percentage }}%
+                        </span>
+                    </p>
+
+                    {% endif %}
+
+
+                    <!-- Acquired Date -->
+                    <p class="text-muted small mt-3 mb-0">
+
+                        <strong>Acquired:</strong>
+
+                        {{ skill.acquired_at
+                           if skill.acquired_at is defined
+                           else skill.created_at
+                           if skill.created_at is defined
+                           else 'N/A' }}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <!-- No Skills -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body text-center py-5">
+
+            <div class="display-4 mb-3">
+                🎯
+            </div>
+
+            <h5>No Skills Recorded Yet</h5>
+
+            <p class="text-muted">
+                Complete training programs and assessments
+                to build your skill profile.
+            </p>
+
+            <a href="{{ url_for('employee_courses') }}"
+               class="btn btn-primary">
+
+                Browse Courses
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

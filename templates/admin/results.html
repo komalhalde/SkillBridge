@@ -1,0 +1,463 @@
+{% extends "base.html" %}
+
+{% block title %}Assessment Results{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Assessment Results
+            </h2>
+
+            <p class="text-muted mb-0">
+                View employee assessment scores and results
+            </p>
+
+        </div>
+
+
+        <a href="{{ url_for('admin_dashboard') }}"
+           class="btn btn-outline-secondary">
+
+            ← Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- ==================================================== -->
+    <!-- STATISTICS -->
+    <!-- ==================================================== -->
+
+    {% set total_results = results|length %}
+
+    {% set passed_results = results
+        |selectattr('status', 'equalto', 'passed')
+        |list
+        |length
+    %}
+
+    {% set failed_results = total_results - passed_results %}
+
+
+    <div class="row g-3 mb-4">
+
+
+        <!-- Total Results -->
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Total Results
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        {{ total_results }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Passed -->
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Passed
+                    </small>
+
+                    <h3 class="fw-bold text-success mb-0">
+                        {{ passed_results }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Failed -->
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Failed
+                    </small>
+
+                    <h3 class="fw-bold text-danger mb-0">
+                        {{ failed_results }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Average Score -->
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Average Score
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+
+                        {% if results %}
+
+                            {% set total_percentage = 0 %}
+
+                            {% for result in results %}
+
+                                {% set total_percentage =
+                                    total_percentage
+                                    + (result.percentage|float)
+                                %}
+
+                            {% endfor %}
+
+                            {{
+                                "%.1f"|format(
+                                    total_percentage / results|length
+                                )
+                            }}%
+
+                        {% else %}
+
+                            0%
+
+                        {% endif %}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================== -->
+    <!-- SEARCH -->
+    <!-- ==================================================== -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <form
+                method="GET"
+                action="{{ url_for('admin_results') }}"
+                class="row g-2"
+            >
+
+                <div class="col-md-10">
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-control"
+                        placeholder="Search employee, assessment or program..."
+                        value="{{ request.args.get('search', '') }}"
+                    >
+
+                </div>
+
+
+                <div class="col-md-2">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                    >
+
+                        Search
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================== -->
+    <!-- RESULTS TABLE -->
+    <!-- ==================================================== -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white py-3">
+
+            <h5 class="mb-0 fw-bold">
+                Employee Results
+            </h5>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            {% if results %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Employee</th>
+
+                            <th>Assessment</th>
+
+                            <th>Program</th>
+
+                            <th>Score</th>
+
+                            <th>Percentage</th>
+
+                            <th>Status</th>
+
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for result in results %}
+
+                        <tr>
+
+
+                            <!-- Number -->
+                            <td>
+                                {{ loop.index }}
+                            </td>
+
+
+                            <!-- Employee -->
+                            <td>
+
+                                <div class="fw-semibold">
+
+                                    {{ result.employee_name }}
+
+                                </div>
+
+
+                                {% if result.employee_email %}
+
+                                    <small class="text-muted">
+
+                                        {{ result.employee_email }}
+
+                                    </small>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Assessment -->
+                            <td>
+
+                                {{ result.assessment_title }}
+
+                            </td>
+
+
+                            <!-- Program -->
+                            <td>
+
+                                {{ result.program_title }}
+
+                            </td>
+
+
+                            <!-- Score -->
+                            <td>
+
+                                <div class="fw-bold">
+
+                                    {{ result.score|float|int }}
+
+                                    /
+
+                                    {{ result.total_marks|float|int }}
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- Percentage -->
+                            <td>
+
+                                <span class="badge bg-info text-dark">
+
+                                    {{
+                                        "%.1f"|format(
+                                            result.percentage|float
+                                        )
+                                    }}%
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- Status -->
+                            <td>
+
+                                {% set status =
+                                    result.status
+                                    |default('')
+                                    |string
+                                    |lower
+                                    |trim
+                                %}
+
+
+                                {% if status == 'passed'
+                                      or status == 'pass' %}
+
+                                    <span class="badge bg-success">
+
+                                        ✓ Passed
+
+                                    </span>
+
+                                {% elif status == 'failed'
+                                      or status == 'fail' %}
+
+                                    <span class="badge bg-danger">
+
+                                        ✗ Failed
+
+                                    </span>
+
+                                {% else %}
+
+                                    <!-- Backup calculation -->
+                                    {% if result.percentage|float >= 40 %}
+
+                                        <span class="badge bg-success">
+
+                                            ✓ Passed
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-danger">
+
+                                            ✗ Failed
+
+                                        </span>
+
+                                    {% endif %}
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Date -->
+                            <td>
+
+                                {% if result.attempt_date %}
+
+                                    {{ result.attempt_date }}
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            </td>
+
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+                <!-- No Results -->
+
+                <div class="text-center py-5">
+
+                    <div class="display-5 mb-3">
+                        📊
+                    </div>
+
+
+                    <h5 class="fw-bold">
+                        No results found
+                    </h5>
+
+
+                    <p class="text-muted mb-0">
+
+                        Employee assessment results
+                        will appear here.
+
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

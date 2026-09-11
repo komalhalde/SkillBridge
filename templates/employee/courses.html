@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Available Courses{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Available Training Programs</h2>
+            <p class="text-muted mb-0">
+                Explore training programs and enroll in courses.
+            </p>
+        </div>
+
+        <a href="{{ url_for('employee_dashboard') }}"
+           class="btn btn-secondary">
+            ← Dashboard
+        </a>
+    </div>
+
+
+    <!-- Search -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <input type="text"
+                   id="courseSearch"
+                   class="form-control"
+                   placeholder="Search training programs..."
+                   onkeyup="searchCourses()">
+
+        </div>
+    </div>
+
+
+    {% if programs %}
+
+    <div class="row" id="courseContainer">
+
+        {% for program in programs %}
+
+        <div class="col-md-4 mb-4 course-card">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <h5 class="card-title fw-bold">
+                        {{ program.title
+                           if program.title is defined
+                           else program.name
+                           if program.name is defined
+                           else 'Training Program' }}
+                    </h5>
+
+                    <p class="text-muted">
+                        {{ program.description
+                           if program.description is defined
+                           else 'No description available.' }}
+                    </p>
+
+
+                    <!-- Program Information -->
+
+                    <div class="mb-2">
+                        <strong>Duration:</strong>
+
+                        {{ program.duration
+                           if program.duration is defined
+                           else 'Not specified' }}
+                    </div>
+
+
+                    <div class="mb-2">
+                        <strong>Trainer:</strong>
+
+                        {{ program.trainer_name
+                           if program.trainer_name is defined
+                           else program.trainer
+                           if program.trainer is defined
+                           else 'Not assigned' }}
+                    </div>
+
+
+                    <div class="mb-3">
+                        <strong>Skills:</strong>
+
+                        {{ program.skills
+                           if program.skills is defined
+                           else 'General Skills' }}
+                    </div>
+
+
+                    <!-- Enroll Button -->
+
+                    <form method="POST"
+                          action="{{ url_for('enroll_program',
+                                             program_id=program.id) }}">
+
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+
+                            Enroll Now
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <!-- No Programs -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body text-center py-5">
+
+            <div class="display-4 mb-3">
+                📚
+            </div>
+
+            <h5>No Training Programs Available</h5>
+
+            <p class="text-muted">
+                There are currently no training programs available
+                for enrollment.
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<!-- Search Script -->
+
+<script>
+
+function searchCourses() {
+
+    const input =
+        document.getElementById("courseSearch");
+
+    const filter =
+        input.value.toLowerCase();
+
+    const cards =
+        document.querySelectorAll(".course-card");
+
+    cards.forEach(function(card) {
+
+        const text =
+            card.textContent.toLowerCase();
+
+        if (text.includes(filter)) {
+
+            card.style.display = "";
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

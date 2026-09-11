@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+
+{% block title %}Certificates{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Certificates</h2>
+            <p class="text-muted mb-0">
+                View and manage employee training certificates
+            </p>
+        </div>
+
+        <a href="{{ url_for('admin_dashboard') }}"
+           class="btn btn-outline-secondary">
+            ← Dashboard
+        </a>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <small class="text-muted">
+                        Total Certificates
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        {{ certificates|length }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <small class="text-muted">
+                        Issued
+                    </small>
+
+                    <h3 class="fw-bold text-success mb-0">
+                        {{ certificates|length }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <small class="text-muted">
+                        Status
+                    </small>
+
+                    <h3 class="fw-bold text-primary mb-0">
+                        Active
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Search -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <form method="GET"
+                  action="{{ url_for('admin_certificates') }}"
+                  class="row g-2">
+
+                <div class="col-md-10">
+
+                    <input type="text"
+                           name="search"
+                           class="form-control"
+                           placeholder="Search employee, program or certificate number..."
+                           value="{{ request.args.get('search', '') }}">
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <button type="submit"
+                            class="btn btn-primary w-100">
+                        Search
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Certificates Table -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white py-3">
+
+            <h5 class="mb-0 fw-bold">
+                Issued Certificates
+            </h5>
+
+        </div>
+
+        <div class="card-body p-0">
+
+            {% if certificates %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Certificate No.</th>
+
+                            <th>Employee</th>
+
+                            <th>Training Program</th>
+
+                            <th>Issue Date</th>
+
+                            <th>Status</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% for certificate in certificates %}
+
+                        <tr>
+
+                            <!-- Number -->
+                            <td>
+                                {{ loop.index }}
+                            </td>
+
+                            <!-- Certificate Number -->
+                            <td>
+
+                                <span class="fw-semibold">
+                                    {{ certificate.certificate_number
+                                       or certificate.certificate_no
+                                       or certificate.id }}
+                                </span>
+
+                            </td>
+
+                            <!-- Employee -->
+                            <td>
+
+                                <div class="fw-semibold">
+                                    {{ certificate.employee_name
+                                       or certificate.user_name
+                                       or '-' }}
+                                </div>
+
+                                {% if certificate.employee_email %}
+
+                                    <small class="text-muted">
+                                        {{ certificate.employee_email }}
+                                    </small>
+
+                                {% endif %}
+
+                            </td>
+
+                            <!-- Program -->
+                            <td>
+
+                                {{ certificate.program_title
+                                   or certificate.training_title
+                                   or '-' }}
+
+                            </td>
+
+                            <!-- Issue Date -->
+                            <td>
+
+                                {% if certificate.issue_date %}
+
+                                    {{ certificate.issue_date }}
+
+                                {% elif certificate.issued_at %}
+
+                                    {{ certificate.issued_at }}
+
+                                {% elif certificate.created_at %}
+
+                                    {{ certificate.created_at }}
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            </td>
+
+                            <!-- Status -->
+                            <td>
+
+                                {% if certificate.status %}
+
+                                    {% if certificate.status|lower == 'active' %}
+
+                                        <span class="badge bg-success">
+                                            Active
+                                        </span>
+
+                                    {% elif certificate.status|lower == 'revoked' %}
+
+                                        <span class="badge bg-danger">
+                                            Revoked
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-secondary">
+                                            {{ certificate.status }}
+                                        </span>
+
+                                    {% endif %}
+
+                                {% else %}
+
+                                    <span class="badge bg-success">
+                                        Active
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <!-- Actions -->
+                            <td>
+
+                                <div class="d-flex gap-2">
+
+                                    {% if certificate.id %}
+
+                                        {% if url_for is defined %}
+
+                                            <a href="{{ url_for(
+                                                'download_certificate',
+                                                certificate_id=certificate.id
+                                            ) }}"
+                                               class="btn btn-sm btn-outline-primary"
+                                               target="_blank">
+                                                Download
+                                            </a>
+
+                                        {% endif %}
+
+                                    {% endif %}
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+                <div class="text-center py-5">
+
+                    <div class="display-5 mb-3">
+                        📜
+                    </div>
+
+                    <h5 class="fw-bold">
+                        No certificates found
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        Certificates will appear here after
+                        successful training completion.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

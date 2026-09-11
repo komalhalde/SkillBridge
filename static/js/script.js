@@ -1,0 +1,8 @@
+document.addEventListener('DOMContentLoaded',()=>{
+ document.querySelectorAll('.alert').forEach(a=>setTimeout(()=>a.remove(),6000));
+ document.querySelectorAll('.progress-width').forEach(el=>{const p=Math.max(0,Math.min(100,Number(el.dataset.progress||0)));el.style.width=p+'%';});
+ const form=document.getElementById('registerForm'); if(!form)return;
+ const name=document.getElementById('name'),email=document.getElementById('email'),password=document.getElementById('password'),confirmPassword=document.getElementById('confirm_password'),role=document.getElementById('role'),phone=document.getElementById('phone'),department=document.getElementById('department'),designation=document.getElementById('designation'),expertise=document.getElementById('expertise');
+ const check=()=>{let ok=true; const invalid=(el,bad)=>{el.classList.toggle('is-invalid',bad);if(bad)ok=false}; invalid(name,!/^[A-Za-z ]{2,50}$/.test(name.value.trim())); invalid(email,!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())); invalid(password,!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,50}$/.test(password.value)); invalid(confirmPassword,password.value!==confirmPassword.value); if(phone.value)invalid(phone,!/^[6-9]\d{9}$/.test(phone.value)); if(role.value==='employee'){invalid(department,!department.value.trim());invalid(designation,!designation.value.trim());}else{invalid(expertise,!expertise.value.trim());} return ok;};
+ [name,email,password,confirmPassword,phone,department,designation,expertise].forEach(x=>x&&x.addEventListener('input',check)); role.addEventListener('change',check); form.addEventListener('submit',e=>{if(!check()){e.preventDefault();const x=form.querySelector('.is-invalid');if(x)x.focus();}});
+});

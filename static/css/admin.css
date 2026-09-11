@@ -1,0 +1,811 @@
+/* =========================================================
+   SKILLBRIDGE - PROFESSIONAL UI
+   Common CSS for Admin / Trainer / Employee
+   ========================================================= */
+
+:root {
+    --primary: #4f46e5;
+    --primary-dark: #3730a3;
+    --secondary: #64748b;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --danger: #dc2626;
+    --info: #0891b2;
+
+    --dark: #0f172a;
+    --text: #334155;
+    --muted: #64748b;
+    --light: #f8fafc;
+    --border: #e2e8f0;
+    --white: #ffffff;
+
+    --radius: 16px;
+    --shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+    --shadow-hover: 0 15px 40px rgba(15, 23, 42, 0.14);
+}
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family:
+        Inter,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(79, 70, 229, 0.07),
+            transparent 30%
+        ),
+        #f8fafc;
+
+    min-height: 100vh;
+}
+
+a {
+    transition: all 0.2s ease;
+}
+
+.text-muted {
+    color: var(--muted) !important;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar {
+    min-height: 68px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4338ca,
+            #4f46e5 50%,
+            #6366f1
+        ) !important;
+
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+
+    box-shadow:
+        0 4px 20px rgba(67, 56, 202, 0.25);
+}
+
+.navbar-brand {
+    font-size: 1.35rem;
+    letter-spacing: -0.3px;
+}
+
+.navbar-brand i {
+    margin-right: 7px;
+}
+
+.navbar .nav-link {
+    color: rgba(255,255,255,0.88) !important;
+    font-weight: 500;
+    padding: 10px 13px !important;
+    border-radius: 9px;
+    margin: 0 2px;
+}
+
+.navbar .nav-link:hover {
+    color: #fff !important;
+    background: rgba(255,255,255,0.12);
+}
+
+.navbar .nav-link i {
+    margin-right: 5px;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   DROPDOWN
+   ========================================================= */
+
+.dropdown-menu {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-hover);
+    padding: 8px;
+}
+
+.dropdown-item {
+    border-radius: 8px;
+    padding: 9px 12px;
+}
+
+.dropdown-item:hover {
+    background: #f1f5f9;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+main.container-fluid {
+    max-width: 1500px;
+    margin: auto;
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: rgba(255,255,255,0.96);
+
+    box-shadow: var(--shadow);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.card-header {
+    border-bottom: 1px solid var(--border);
+    padding: 17px 20px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+
+/* =========================================================
+   DASHBOARD CARDS
+   ========================================================= */
+
+.dashboard-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-card::before {
+    content: "";
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    right: -35px;
+    top: -35px;
+
+    border-radius: 50%;
+
+    background: rgba(79, 70, 229, 0.06);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+.dashboard-icon {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #fff;
+
+    font-size: 1.35rem;
+
+    box-shadow:
+        0 8px 18px rgba(0,0,0,0.12);
+}
+
+
+/* Bootstrap background improvements */
+
+.bg-primary {
+    background: linear-gradient(
+        135deg,
+        #4f46e5,
+        #6366f1
+    ) !important;
+}
+
+.bg-success {
+    background: linear-gradient(
+        135deg,
+        #15803d,
+        #22c55e
+    ) !important;
+}
+
+.bg-warning {
+    background: linear-gradient(
+        135deg,
+        #d97706,
+        #f59e0b
+    ) !important;
+}
+
+.bg-danger {
+    background: linear-gradient(
+        135deg,
+        #b91c1c,
+        #ef4444
+    ) !important;
+}
+
+.bg-info {
+    background: linear-gradient(
+        135deg,
+        #0e7490,
+        #06b6d4
+    ) !important;
+}
+
+.bg-secondary {
+    background: linear-gradient(
+        135deg,
+        #475569,
+        #64748b
+    ) !important;
+}
+
+
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--dark);
+    letter-spacing: -0.3px;
+}
+
+h2 {
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn {
+    border-radius: 9px;
+    font-weight: 600;
+
+    padding: 9px 16px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background: linear-gradient(
+        135deg,
+        #4f46e5,
+        #6366f1
+    );
+
+    border: none;
+
+    box-shadow:
+        0 5px 14px rgba(79, 70, 229, 0.25);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(
+        135deg,
+        #4338ca,
+        #4f46e5
+    );
+
+    box-shadow:
+        0 8px 18px rgba(79, 70, 229, 0.32);
+}
+
+.btn-success {
+    border: none;
+}
+
+.btn-danger {
+    border: none;
+}
+
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+.form-control,
+.form-select {
+    border: 1px solid #dbe2ea;
+
+    border-radius: 9px;
+
+    padding: 10px 13px;
+
+    min-height: 44px;
+
+    color: var(--text);
+
+    background-color: #fff;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 7px;
+}
+
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.table {
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.table thead th {
+    background: #f8fafc;
+
+    color: #475569;
+
+    font-size: 0.82rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+    font-weight: 700;
+
+    border-bottom: 1px solid var(--border);
+
+    padding: 13px 14px;
+}
+
+.table tbody td {
+    padding: 13px 14px;
+    border-color: #edf1f5;
+}
+
+.table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.table tbody tr:hover {
+    background: #f8fafc;
+}
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.badge {
+    border-radius: 20px;
+    padding: 6px 10px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.alert {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+
+/* =========================================================
+   PROGRESS BAR
+   ========================================================= */
+
+.progress {
+    height: 9px;
+
+    background: #e2e8f0;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.progress-bar {
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #4f46e5,
+            #818cf8
+        );
+}
+
+
+/* =========================================================
+   LOGIN PAGE
+   ========================================================= */
+
+.login-card {
+    border: none;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 25px 70px rgba(15, 23, 42, 0.15);
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+   ========================================================= */
+
+.btn-outline-primary,
+.btn-outline-success,
+.btn-outline-warning,
+.btn-outline-info,
+.btn-outline-danger {
+    border-width: 1.5px;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary);
+}
+
+.btn-outline-success:hover {
+    background: var(--success);
+}
+
+.btn-outline-warning:hover {
+    background: var(--warning);
+    color: #fff;
+}
+
+.btn-outline-info:hover {
+    background: var(--info);
+    color: #fff;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.page-header {
+    padding: 10px 0 22px;
+}
+
+.page-header h2 {
+    margin-bottom: 5px;
+}
+
+
+/* =========================================================
+   STAT NUMBER
+   ========================================================= */
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--dark);
+}
+
+
+/* =========================================================
+   COURSE CARDS
+   ========================================================= */
+
+.course-card {
+    overflow: hidden;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+}
+
+.course-card .card-body {
+    padding: 22px;
+}
+
+.course-card .course-icon {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eef2ff;
+
+    color: var(--primary);
+
+    font-size: 1.4rem;
+}
+
+
+/* =========================================================
+   SKILL CARDS
+   ========================================================= */
+
+.skill-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-card:hover {
+    transform: translateY(-4px);
+}
+
+.skill-level {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   CERTIFICATE
+   ========================================================= */
+
+.certificate-card {
+    position: relative;
+
+    border: 1px solid #e2e8f0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #f8fafc
+        );
+}
+
+.certificate-card::after {
+    content: "★";
+
+    position: absolute;
+
+    right: 20px;
+    top: 15px;
+
+    font-size: 2rem;
+
+    color: #f59e0b;
+
+    opacity: 0.15;
+}
+
+
+/* =========================================================
+   ASSESSMENT
+   ========================================================= */
+
+.question-card {
+    border-left: 4px solid var(--primary);
+}
+
+.option-box {
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    padding: 12px 15px;
+
+    margin-bottom: 10px;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.option-box:hover {
+    border-color: var(--primary);
+
+    background: #eef2ff;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-state i {
+    font-size: 3.5rem;
+    color: #cbd5e1;
+    margin-bottom: 15px;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+    color: #64748b;
+}
+
+footer hr {
+    border-color: #e2e8f0;
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal-content {
+    border: none;
+    border-radius: 16px;
+
+    box-shadow:
+        0 25px 70px rgba(15,23,42,0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border);
+}
+
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.page-link {
+    border: none;
+
+    margin: 0 3px;
+
+    border-radius: 8px !important;
+
+    color: var(--primary);
+}
+
+.page-item.active .page-link {
+    background: var(--primary);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 991px) {
+
+    .navbar .nav-link {
+        margin: 2px 0;
+    }
+
+    .dashboard-card:hover,
+    .course-card:hover,
+    .skill-card:hover {
+        transform: none;
+    }
+}
+
+
+@media (max-width: 767px) {
+
+    .card-body {
+        padding: 16px;
+    }
+
+    h2 {
+        font-size: 1.45rem;
+    }
+
+    .stat-number {
+        font-size: 1.6rem;
+    }
+
+    .table-responsive {
+        border-radius: 12px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    main.container-fluid {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .dashboard-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+}

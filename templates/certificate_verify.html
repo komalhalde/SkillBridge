@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Certificate Verification - SkillBridge{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Verification Header -->
+            <div class="text-center mb-4">
+
+                <div class="mb-3">
+                    <i class="bi bi-patch-check-fill text-success"
+                       style="font-size: 4rem;"></i>
+                </div>
+
+                <h2 class="fw-bold">
+                    Certificate Verification
+                </h2>
+
+                <p class="text-muted">
+                    Verify the authenticity of this SkillBridge certificate
+                </p>
+
+            </div>
+
+
+            <!-- Certificate Card -->
+            <div class="card border-0 shadow certificate-card">
+
+                <div class="card-body p-4 p-md-5">
+
+                    <!-- Status -->
+                    <div class="text-center mb-4">
+
+                        <span class="badge bg-success px-4 py-2 fs-6">
+                            <i class="bi bi-check-circle-fill"></i>
+                            Certificate Verified
+                        </span>
+
+                    </div>
+
+
+                    <!-- Certificate Details -->
+                    <div class="certificate-details">
+
+                        <div class="detail-row">
+                            <span class="detail-label">
+                                <i class="bi bi-person-fill"></i>
+                                Employee Name
+                            </span>
+
+                            <span class="detail-value">
+                                {{ certificate.employee_name }}
+                            </span>
+                        </div>
+
+
+                        <div class="detail-row">
+                            <span class="detail-label">
+                                <i class="bi bi-book-fill"></i>
+                                Training Program
+                            </span>
+
+                            <span class="detail-value">
+                                {{ certificate.program_title }}
+                            </span>
+                        </div>
+
+
+                        <div class="detail-row">
+                            <span class="detail-label">
+                                <i class="bi bi-award-fill"></i>
+                                Certificate Number
+                            </span>
+
+                            <span class="detail-value fw-bold">
+                                {{ certificate.certificate_number }}
+                            </span>
+                        </div>
+
+
+                        <div class="detail-row">
+                            <span class="detail-label">
+                                <i class="bi bi-calendar-check-fill"></i>
+                                Issue Date
+                            </span>
+
+                            <span class="detail-value">
+                                {{ certificate.issued_at }}
+                            </span>
+                        </div>
+
+
+                        {% if certificate.percentage is defined %}
+
+                        <div class="detail-row">
+                            <span class="detail-label">
+                                <i class="bi bi-percent"></i>
+                                Assessment Score
+                            </span>
+
+                            <span class="detail-value text-success fw-bold">
+                                {{ "%.1f"|format(certificate.percentage) }}%
+                            </span>
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Verification Message -->
+                    <div class="alert alert-success border-0 mt-4 mb-0">
+
+                        <div class="d-flex">
+
+                            <i class="bi bi-shield-check-fill fs-4 me-3"></i>
+
+                            <div>
+                                <strong>Authentic Certificate</strong>
+
+                                <p class="mb-0 mt-1">
+                                    This certificate has been issued by
+                                    SkillBridge and successfully verified
+                                    in the system.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+            <div class="text-center mt-4">
+
+                <a href="{{ url_for('login') }}"
+                   class="btn btn-outline-primary">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    SkillBridge Login
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

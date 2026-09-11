@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Update Progress - SkillBridge{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="page-header">
+        <a href="{{ url_for('employee_my_courses') }}"
+           class="btn btn-sm btn-outline-secondary mb-3">
+            <i class="bi bi-arrow-left"></i>
+            Back to My Courses
+        </a>
+
+        <h2>
+            <i class="bi bi-graph-up-arrow text-primary"></i>
+            Update Course Progress
+        </h2>
+
+        <p class="text-muted">
+            Update your current progress for this training program.
+        </p>
+    </div>
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <div class="card border-0">
+
+                <div class="card-body p-4">
+
+                    <!-- Course Information -->
+                    <div class="d-flex align-items-center mb-4">
+
+                        <div class="dashboard-icon bg-primary me-3">
+                            <i class="bi bi-book"></i>
+                        </div>
+
+                        <div>
+                            <h4 class="fw-bold mb-1">
+                                {{ enrollment.title }}
+                            </h4>
+
+                            <small class="text-muted">
+                                Course Progress
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Current Progress -->
+                    <div class="mb-4">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span class="fw-semibold">
+                                Current Progress
+                            </span>
+
+                            <span class="fw-bold text-primary">
+                                {{ enrollment.progress|default(0) }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress" style="height: 12px;">
+
+                            <div
+                                class="progress-bar"
+                                role="progressbar"
+                                style="width: {{ enrollment.progress|default(0) }}%"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Update Form -->
+                    <form method="POST">
+
+                        <div class="mb-4">
+
+                            <label for="progress" class="form-label">
+                                Update Progress
+                            </label>
+
+                            <div class="input-group">
+
+                                <input
+                                    type="number"
+                                    id="progress"
+                                    name="progress"
+                                    class="form-control"
+                                    min="0"
+                                    max="100"
+                                    value="{{ enrollment.progress|default(0) }}"
+                                    required
+                                >
+
+                                <span class="input-group-text">
+                                    %
+                                </span>
+
+                            </div>
+
+                            <div class="form-text">
+                                Enter a value between 0 and 100.
+                            </div>
+
+                        </div>
+
+
+                        <!-- Progress Quick Buttons -->
+                        <div class="mb-4">
+
+                            <label class="form-label">
+                                Quick Select
+                            </label>
+
+                            <div class="d-flex flex-wrap gap-2">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary btn-sm"
+                                    onclick="setProgress(25)"
+                                >
+                                    25%
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary btn-sm"
+                                    onclick="setProgress(50)"
+                                >
+                                    50%
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary btn-sm"
+                                    onclick="setProgress(75)"
+                                >
+                                    75%
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-success btn-sm"
+                                    onclick="setProgress(100)"
+                                >
+                                    100% Complete
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Status Information -->
+                        <div class="alert alert-info">
+
+                            <div class="d-flex">
+
+                                <i class="bi bi-info-circle fs-5 me-2"></i>
+
+                                <div>
+
+                                    <strong>Important</strong>
+
+                                    <p class="mb-0 small">
+                                        Completing the course does not automatically
+                                        mean you have passed the assessment.
+                                        Complete the assessment to qualify for
+                                        your certificate.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+
+                            <a
+                                href="{{ url_for('employee_my_courses') }}"
+                                class="btn btn-outline-secondary"
+                            >
+                                <i class="bi bi-x-circle"></i>
+                                Cancel
+                            </a>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary px-4"
+                            >
+                                <i class="bi bi-check-circle"></i>
+                                Save Progress
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+function setProgress(value) {
+    document.getElementById("progress").value = value;
+}
+</script>
+
+{% endblock %}

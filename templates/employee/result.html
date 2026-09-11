@@ -1,0 +1,315 @@
+{% extends "base.html" %}
+
+{% block title %}Assessment Result - SkillBridge{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-bar-chart-fill text-primary"></i>
+                Assessment Result
+            </h2>
+
+            <p class="text-muted mb-0">
+                View your assessment performance and result
+            </p>
+        </div>
+
+        <a href="{{ url_for('employee_my_courses') }}"
+           class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left"></i>
+            My Courses
+        </a>
+    </div>
+
+
+    <!-- Result Card -->
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0 result-card">
+
+                <div class="card-body p-4">
+
+                    <!-- Assessment Info -->
+                    <div class="text-center mb-4">
+
+                        <div class="result-icon mb-3">
+
+                            {% if result.status|lower == 'passed' %}
+
+                                <i class="bi bi-check-circle-fill text-success"
+                                   style="font-size: 60px;"></i>
+
+                            {% else %}
+
+                                <i class="bi bi-x-circle-fill text-danger"
+                                   style="font-size: 60px;"></i>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <h3 class="fw-bold">
+                            {{ result.title or result.assessment_title or 'Assessment' }}
+                        </h3>
+
+
+                        {% if result.program_title %}
+
+                            <p class="text-muted mb-0">
+                                {{ result.program_title }}
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Status -->
+                    <div class="text-center mb-4">
+
+                        {% if result.status|lower == 'passed' %}
+
+                            <span class="badge bg-success fs-6 px-4 py-2">
+                                <i class="bi bi-check-lg"></i>
+                                PASSED
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger fs-6 px-4 py-2">
+                                <i class="bi bi-x-lg"></i>
+                                FAILED
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Score -->
+                    <div class="row g-3 mb-4">
+
+                        <div class="col-md-4">
+
+                            <div class="result-stat text-center">
+
+                                <i class="bi bi-trophy-fill text-warning fs-3"></i>
+
+                                <h3 class="mt-2">
+                                    {{ result.score }}
+                                    /
+                                    {{ result.total_marks }}
+                                </h3>
+
+                                <p>Score</p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <div class="result-stat text-center">
+
+                                <i class="bi bi-percent text-primary fs-3"></i>
+
+                                <h3 class="mt-2">
+
+                                    {{ "%.1f"|format(result.percentage|float) }}%
+
+                                </h3>
+
+                                <p>Percentage</p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <div class="result-stat text-center">
+
+                                <i class="bi bi-calendar-check text-info fs-3"></i>
+
+                                <h3 class="small mt-3">
+
+                                    {{ result.attempt_date }}
+
+                                </h3>
+
+                                <p>Attempt Date</p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Progress -->
+                    <div class="mb-4">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span class="fw-semibold">
+                                Your Performance
+                            </span>
+
+                            <span class="fw-bold">
+
+                                {{ "%.1f"|format(result.percentage|float) }}%
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="progress"
+                             style="height: 14px;">
+
+                            <div
+                                class="progress-bar
+                                {% if result.status|lower == 'passed' %}
+                                    bg-success
+                                {% else %}
+                                    bg-danger
+                                {% endif %}"
+
+                                role="progressbar"
+
+                                style="width: {{ result.percentage|float }}%;"
+
+                                aria-valuenow="{{ result.percentage|float }}"
+
+                                aria-valuemin="0"
+
+                                aria-valuemax="100">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Message -->
+
+                    {% if result.status|lower == 'passed' %}
+
+                        <div class="alert alert-success border-0">
+
+                            <div class="d-flex">
+
+                                <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+
+                                <div>
+
+                                    <strong>
+                                        Congratulations!
+                                    </strong>
+
+                                    <p class="mb-0 mt-1">
+
+                                        You have successfully completed
+                                        this assessment.
+
+                                        Your certificate may now be available.
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="alert alert-warning border-0">
+
+                            <div class="d-flex">
+
+                                <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+
+                                <div>
+
+                                    <strong>
+                                        Keep Learning!
+                                    </strong>
+
+                                    <p class="mb-0 mt-1">
+
+                                        You did not reach the passing
+                                        percentage.
+
+                                        Review the course material and
+                                        improve your knowledge.
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- Actions -->
+                    <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+
+                        <a href="{{ url_for('employee_my_courses') }}"
+                           class="btn btn-primary">
+
+                            <i class="bi bi-book"></i>
+                            My Courses
+
+                        </a>
+
+
+                        <a href="{{ url_for('employee_skills') }}"
+                           class="btn btn-outline-success">
+
+                            <i class="bi bi-stars"></i>
+                            My Skills
+
+                        </a>
+
+
+                        {% if result.status|lower == 'passed' %}
+
+                            <a href="{{ url_for('employee_certificates') }}"
+                               class="btn btn-outline-warning">
+
+                                <i class="bi bi-award"></i>
+                                Certificates
+
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

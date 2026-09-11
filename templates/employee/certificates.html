@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}My Certificates{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">My Certificates</h2>
+            <p class="text-muted mb-0">
+                View and download your training certificates.
+            </p>
+        </div>
+
+        <a href="{{ url_for('employee_dashboard') }}"
+           class="btn btn-secondary">
+            ← Dashboard
+        </a>
+    </div>
+
+
+    {% if certificates %}
+
+    <div class="row">
+
+        {% for certificate in certificates %}
+
+        <div class="col-md-6 col-lg-4 mb-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body text-center">
+
+                    <!-- Certificate Icon -->
+                    <div class="mb-3" style="font-size: 55px;">
+                        🏆
+                    </div>
+
+
+                    <!-- Certificate Title -->
+                    <h5 class="fw-bold">
+                        Certificate of Completion
+                    </h5>
+
+
+                    <!-- Program Name -->
+                    <p class="mb-2">
+
+                        <strong>Program:</strong><br>
+
+                        {{ certificate.program_title
+                           if certificate.program_title is defined
+                           else certificate.program_name
+                           if certificate.program_name is defined
+                           else 'Training Program' }}
+
+                    </p>
+
+
+                    <!-- Certificate Number -->
+                    {% if certificate.certificate_number is defined %}
+
+                    <p class="mb-2">
+                        <strong>Certificate No:</strong><br>
+
+                        <span class="text-primary">
+                            {{ certificate.certificate_number }}
+                        </span>
+                    </p>
+
+                    {% endif %}
+
+
+                    <!-- Issue Date -->
+                    <p class="mb-2">
+
+                        <strong>Issued On:</strong><br>
+
+                        {{ certificate.issued_at
+                           if certificate.issued_at is defined
+                           else certificate.issue_date
+                           if certificate.issue_date is defined
+                           else 'N/A' }}
+
+                    </p>
+
+
+                    <!-- Score -->
+                    {% if certificate.percentage is defined %}
+
+                    <p class="mb-3">
+
+                        <strong>Assessment:</strong>
+
+                        <span class="badge bg-success">
+                            {{ certificate.percentage }}%
+                        </span>
+
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Actions -->
+
+                <div class="card-footer bg-white border-0">
+
+                    <div class="d-grid gap-2">
+
+                        {% if certificate.id is defined %}
+
+                        <a href="{{ url_for(
+                            'download_certificate',
+                            certificate_id=certificate.id
+                        ) }}"
+                           class="btn btn-primary">
+
+                            📥 Download Certificate
+
+                        </a>
+
+                        <a href="{{ url_for(
+                            'verify_certificate',
+                            certificate_id=certificate.id
+                        ) }}"
+                           class="btn btn-outline-success">
+
+                            ✓ Verify Certificate
+
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <!-- No Certificates -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body text-center py-5">
+
+            <div class="display-4 mb-3">
+                🏆
+            </div>
+
+            <h5>No Certificates Available</h5>
+
+            <p class="text-muted">
+                Complete your training program and pass the assessment
+                to receive a certificate.
+            </p>
+
+            <a href="{{ url_for('employee_courses') }}"
+               class="btn btn-primary">
+
+                Browse Courses
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

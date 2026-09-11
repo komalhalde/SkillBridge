@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block title %}Trainer Dashboard - SkillBridge{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="page-header d-flex justify-content-between align-items-center">
+        <div>
+            <h2>
+                <i class="bi bi-speedometer2 text-primary"></i>
+                Trainer Dashboard
+            </h2>
+            <p class="text-muted">
+                Manage your assigned training programs and assessments.
+            </p>
+        </div>
+
+        <span class="badge bg-success fs-6">
+            <i class="bi bi-person-badge"></i> Trainer
+        </span>
+    </div>
+
+
+    <!-- Statistics -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6 col-xl-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <p class="text-muted mb-1">Assigned Programs</p>
+                            <div class="stat-number">
+                                {{ program_count|default(0) }}
+                            </div>
+                        </div>
+
+                        <div class="dashboard-icon bg-primary">
+                            <i class="bi bi-book"></i>
+                        </div>
+                    </div>
+
+                    <a href="{{ url_for('trainer_assessments') }}"
+                       class="text-decoration-none">
+                        Manage Assessments →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6 col-xl-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <p class="text-muted mb-1">Assessments</p>
+                            <div class="stat-number">
+                                {{ assessment_count|default(0) }}
+                            </div>
+                        </div>
+
+                        <div class="dashboard-icon bg-warning">
+                            <i class="bi bi-clipboard-check"></i>
+                        </div>
+                    </div>
+
+                    <a href="{{ url_for('trainer_assessments') }}"
+                       class="text-decoration-none text-warning">
+                        View Assessments →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6 col-xl-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <p class="text-muted mb-1">Employee Results</p>
+                            <div class="stat-number">
+                                {{ result_count|default(0) }}
+                            </div>
+                        </div>
+
+                        <div class="dashboard-icon bg-success">
+                            <i class="bi bi-bar-chart-line"></i>
+                        </div>
+                    </div>
+
+                    <a href="{{ url_for('trainer_results') }}"
+                       class="text-decoration-none text-success">
+                        View Results →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+    <div class="card border-0 mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="mb-0 fw-bold">
+                <i class="bi bi-lightning-charge text-warning"></i>
+                Quick Actions
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ url_for('trainer_assessments') }}"
+                       class="btn btn-primary w-100 py-3">
+                        <i class="bi bi-clipboard-check fs-5"></i>
+                        <br>
+                        Manage Assessments
+                    </a>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ url_for('trainer_results') }}"
+                       class="btn btn-outline-success w-100 py-3">
+                        <i class="bi bi-bar-chart-line fs-5"></i>
+                        <br>
+                        View Employee Results
+                    </a>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ url_for('dashboard') }}"
+                       class="btn btn-outline-secondary w-100 py-3">
+                        <i class="bi bi-house fs-5"></i>
+                        <br>
+                        Back to Dashboard
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Assigned Programs -->
+    <div class="card border-0">
+
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+            <div>
+                <h5 class="fw-bold mb-1">
+                    <i class="bi bi-book-half text-primary"></i>
+                    Assigned Training Programs
+                </h5>
+
+                <small class="text-muted">
+                    Programs currently assigned to you
+                </small>
+            </div>
+
+            <span class="badge bg-primary">
+                {{ program_count|default(0) }} Programs
+            </span>
+
+        </div>
+
+        <div class="card-body">
+
+            {% if programs %}
+
+            <div class="row g-4">
+
+                {% for program in programs %}
+
+                <div class="col-md-6 col-xl-4">
+
+                    <div class="card course-card h-100">
+
+                        <div class="card-body">
+
+                            <div class="course-icon mb-3">
+                                <i class="bi bi-mortarboard"></i>
+                            </div>
+
+                            <h5 class="fw-bold">
+                                {{ program.title }}
+                            </h5>
+
+                            <p class="text-muted small">
+                                {{ program.description or
+                                   'No description available.' }}
+                            </p>
+
+                            <div class="mb-3">
+
+                                {% if program.duration %}
+                                <span class="badge bg-light text-dark me-1">
+                                    <i class="bi bi-clock"></i>
+                                    {{ program.duration }}
+                                </span>
+                                {% endif %}
+
+                            </div>
+
+                            {% if program.skills %}
+
+                            <div class="mb-3">
+                                <small class="fw-bold">
+                                    Skills:
+                                </small>
+
+                                <div class="mt-1">
+                                    {% for skill in program.skills.split(',') %}
+                                        <span class="badge bg-primary-subtle text-primary me-1 mb-1">
+                                            {{ skill.strip() }}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            {% endif %}
+
+                            <a href="{{ url_for('trainer_assessments') }}"
+                               class="btn btn-primary btn-sm w-100">
+                                <i class="bi bi-clipboard-check"></i>
+                                Manage Assessment
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <i class="bi bi-book"></i>
+
+                <h5 class="fw-bold">
+                    No Programs Assigned
+                </h5>
+
+                <p class="text-muted">
+                    You don't have any training programs assigned yet.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

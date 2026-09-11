@@ -1,0 +1,457 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">Training Programs</h2>
+
+            <p class="text-muted mb-0">
+                Create, update and manage corporate training programs.
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+
+            <a href="{{ url_for('admin_dashboard') }}"
+               class="btn btn-outline-primary">
+
+                <i class="bi bi-arrow-left"></i>
+                Dashboard
+
+            </a>
+
+            <a href="{{ url_for('admin_program_create') }}"
+               class="btn btn-primary">
+
+                <i class="bi bi-plus-lg"></i>
+                Add Program
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Search and Filter -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <form method="GET"
+                  class="row g-2">
+
+                <div class="col-md-6">
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-control"
+                        placeholder="Search training program..."
+                        value="{{ search or '' }}"
+                    >
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <select
+                        name="category"
+                        class="form-select"
+                    >
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+                        <option value="Development"
+                            {% if category == 'Development' %}selected{% endif %}>
+                            Development
+                        </option>
+
+                        <option value="Data"
+                            {% if category == 'Data' %}selected{% endif %}>
+                            Data
+                        </option>
+
+                        <option value="Cloud"
+                            {% if category == 'Cloud' %}selected{% endif %}>
+                            Cloud
+                        </option>
+
+                        <option value="Cyber Security"
+                            {% if category == 'Cyber Security' %}selected{% endif %}>
+                            Cyber Security
+                        </option>
+
+                        <option value="Soft Skills"
+                            {% if category == 'Soft Skills' %}selected{% endif %}>
+                            Soft Skills
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-md-3 d-grid">
+
+                    <button
+                        type="submit"
+                        class="btn btn-outline-primary"
+                    >
+
+                        <i class="bi bi-search"></i>
+                        Search
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- Programs -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white py-3">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h5 class="fw-bold mb-0">
+                    All Training Programs
+                </h5>
+
+                <span class="badge bg-primary">
+                    {{ programs|length }} Programs
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            {% if programs %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Program</th>
+
+                            <th>Category</th>
+
+                            <th>Duration</th>
+
+                            <th>Level</th>
+
+                            <th>Trainer</th>
+
+                            <th>Enrollments</th>
+
+                            <th>Status</th>
+
+                            <th class="text-center">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for program in programs %}
+
+                        <tr>
+
+                            <!-- Number -->
+
+                            <td>
+                                {{ loop.index }}
+                            </td>
+
+
+                            <!-- Program -->
+
+                            <td>
+
+                                <div>
+
+                                    <strong>
+                                        {{ program.title }}
+                                    </strong>
+
+                                    <small class="d-block text-muted">
+
+                                        {{ program.description[:70] if program.description else 'No description available' }}
+
+                                        {% if program.description and program.description|length > 70 %}
+                                            ...
+                                        {% endif %}
+
+                                    </small>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- Category -->
+
+                            <td>
+
+                                {% if program.category %}
+
+                                    <span class="badge bg-light text-dark">
+
+                                        {{ program.category }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Duration -->
+
+                            <td>
+                                {{ program.duration or '-' }}
+                            </td>
+
+
+                            <!-- Skill Level -->
+
+                            <td>
+
+                                {% if program.skill_level == 'Beginner' %}
+
+                                    <span class="badge bg-success">
+                                        Beginner
+                                    </span>
+
+                                {% elif program.skill_level == 'Intermediate' %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        Intermediate
+                                    </span>
+
+                                {% elif program.skill_level == 'Advanced' %}
+
+                                    <span class="badge bg-danger">
+                                        Advanced
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        -
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Trainer -->
+
+                            <td>
+
+                                {% if program.trainer_name %}
+
+                                    <div class="d-flex align-items-center">
+
+                                        <div
+                                            class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center me-2"
+                                            style="width:35px;height:35px;"
+                                        >
+
+                                            {{ program.trainer_name[:1]|upper }}
+
+                                        </div>
+
+                                        <span>
+                                            {{ program.trainer_name }}
+                                        </span>
+
+                                    </div>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        Not Assigned
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Enrollments -->
+
+                            <td>
+
+                                <span class="badge bg-primary">
+
+                                    {{ program.enrollment_count or 0 }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- Status -->
+
+                            <td>
+
+                                {% if program.status == 'active' %}
+
+                                    <span class="badge bg-success">
+                                        Active
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        Inactive
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Actions -->
+
+                            <td class="text-center">
+
+                                <div class="btn-group">
+
+                                    <!-- View -->
+
+                                    <a
+                                        href="{{ url_for('admin_program_view', program_id=program.id) }}"
+                                        class="btn btn-sm btn-outline-primary"
+                                        title="View"
+                                    >
+
+                                        <i class="bi bi-eye"></i>
+
+                                    </a>
+
+
+                                    <!-- Edit -->
+
+                                    <a
+                                        href="{{ url_for('admin_program_edit', program_id=program.id) }}"
+                                        class="btn btn-sm btn-outline-warning"
+                                        title="Edit"
+                                    >
+
+                                        <i class="bi bi-pencil"></i>
+
+                                    </a>
+
+
+                                    <!-- Delete -->
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for('admin_program_delete', program_id=program.id) }}"
+                                        onsubmit="return confirm('Are you sure you want to delete this training program?');"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-sm btn-outline-danger"
+                                            title="Delete"
+                                        >
+
+                                            <i class="bi bi-trash"></i>
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+            <!-- Empty State -->
+
+            <div class="text-center py-5">
+
+                <div class="display-5 text-muted mb-3">
+
+                    <i class="bi bi-mortarboard"></i>
+
+                </div>
+
+                <h5>
+                    No Training Programs Found
+                </h5>
+
+                <p class="text-muted">
+                    Create your first training program to get started.
+                </p>
+
+                <a
+                    href="{{ url_for('admin_program_create') }}"
+                    class="btn btn-primary"
+                >
+
+                    <i class="bi bi-plus-lg"></i>
+                    Create Training Program
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

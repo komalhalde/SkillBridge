@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block title %}Create Assessment{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                Create Assessment
+            </h2>
+
+            <p class="text-muted mb-0">
+                Create an MCQ assessment for your training program
+            </p>
+        </div>
+
+        <a href="{{ url_for('trainer_assessments') }}"
+           class="btn btn-outline-secondary">
+            ← Back
+        </a>
+
+    </div>
+
+
+    <!-- Form Card -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white py-3">
+
+            <h5 class="mb-0 fw-bold">
+                Assessment Details
+            </h5>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <form method="POST"
+                  action="{{ url_for('create_assessment') }}">
+
+                <!-- Training Program -->
+                <div class="mb-3">
+
+                    <label for="program_id"
+                           class="form-label fw-semibold">
+                        Training Program
+                    </label>
+
+                    <select id="program_id"
+                            name="program_id"
+                            class="form-select"
+                            required>
+
+                        <option value="">
+                            -- Select Training Program --
+                        </option>
+
+                        {% for program in programs %}
+
+                            <option value="{{ program.id }}"
+                                {% if selected_program_id
+                                   and selected_program_id|string
+                                      == program.id|string %}
+                                    selected
+                                {% endif %}>
+
+                                {{ program.title }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <div class="form-text">
+                        Select the program for which this assessment
+                        will be created.
+                    </div>
+
+                </div>
+
+
+                <!-- Assessment Title -->
+                <div class="mb-3">
+
+                    <label for="title"
+                           class="form-label fw-semibold">
+                        Assessment Title
+                    </label>
+
+                    <input type="text"
+                           id="title"
+                           name="title"
+                           class="form-control"
+                           placeholder="Example: Python Fundamentals Assessment"
+                           maxlength="150"
+                           required>
+
+                </div>
+
+
+                <!-- Description -->
+                <div class="mb-3">
+
+                    <label for="description"
+                           class="form-label fw-semibold">
+                        Description
+                    </label>
+
+                    <textarea id="description"
+                              name="description"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Enter assessment instructions or description..."
+                              maxlength="1000"></textarea>
+
+                </div>
+
+
+                <!-- Passing Percentage -->
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label for="passing_score"
+                               class="form-label fw-semibold">
+                            Passing Score (%)
+                        </label>
+
+                        <input type="number"
+                               id="passing_score"
+                               name="passing_score"
+                               class="form-control"
+                               min="1"
+                               max="100"
+                               value="50"
+                               required>
+
+                        <div class="form-text">
+                            Employees must achieve this percentage
+                            to pass.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Time Limit -->
+                    <div class="col-md-6 mb-3">
+
+                        <label for="time_limit"
+                               class="form-label fw-semibold">
+                            Time Limit (minutes)
+                        </label>
+
+                        <input type="number"
+                               id="time_limit"
+                               name="time_limit"
+                               class="form-control"
+                               min="1"
+                               max="180"
+                               value="30">
+
+                        <div class="form-text">
+                            Leave as 30 minutes or change as required.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Number of Questions -->
+                <div class="mb-3">
+
+                    <label for="question_count"
+                           class="form-label fw-semibold">
+                        Number of Questions
+                    </label>
+
+                    <input type="number"
+                           id="question_count"
+                           name="question_count"
+                           class="form-control"
+                           min="1"
+                           max="50"
+                           value="10">
+
+                    <div class="form-text">
+                        You can add the questions after creating
+                        the assessment.
+                    </div>
+
+                </div>
+
+
+                <!-- Status -->
+                <div class="mb-4">
+
+                    <label class="form-label fw-semibold">
+                        Assessment Status
+                    </label>
+
+                    <div class="form-check">
+
+                        <input class="form-check-input"
+                               type="checkbox"
+                               id="is_active"
+                               name="is_active"
+                               checked>
+
+                        <label class="form-check-label"
+                               for="is_active">
+                            Make assessment active
+                        </label>
+
+                    </div>
+
+                    <div class="form-text">
+                        Active assessments can be attempted by
+                        enrolled employees.
+                    </div>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary px-4">
+                        Create Assessment
+                    </button>
+
+                    <a href="{{ url_for('trainer_assessments') }}"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

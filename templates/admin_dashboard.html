@@ -1,0 +1,388 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - SkillBridge{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-speedometer2"></i>
+                Admin Dashboard
+            </h2>
+            <p class="text-muted mb-0">
+                Welcome to SkillBridge Training Management System
+            </p>
+        </div>
+
+        <div>
+            <span class="badge bg-primary fs-6">
+                Administrator
+            </span>
+        </div>
+    </div>
+
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-4">
+
+        <!-- Employees -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card dashboard-card shadow-sm h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <p class="text-muted mb-1">
+                                Total Employees
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                {{ employee_count|default(0) }}
+                            </h2>
+                        </div>
+
+                        <div class="dashboard-icon bg-primary">
+                            <i class="bi bi-people"></i>
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="{{ url_for('admin_employees') }}"
+                        class="small text-decoration-none"
+                    >
+                        Manage Employees →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Trainers -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card dashboard-card shadow-sm h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <p class="text-muted mb-1">
+                                Total Trainers
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                {{ trainer_count|default(0) }}
+                            </h2>
+                        </div>
+
+                        <div class="dashboard-icon bg-success">
+                            <i class="bi bi-person-badge"></i>
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="{{ url_for('admin_trainers') }}"
+                        class="small text-decoration-none text-success"
+                    >
+                        Manage Trainers →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Programs -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card dashboard-card shadow-sm h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <p class="text-muted mb-1">
+                                Training Programs
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                {{ program_count|default(0) }}
+                            </h2>
+                        </div>
+
+                        <div class="dashboard-icon bg-warning">
+                            <i class="bi bi-book"></i>
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="{{ url_for('admin_programs') }}"
+                        class="small text-decoration-none text-warning"
+                    >
+                        Manage Programs →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Enrollments -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card dashboard-card shadow-sm h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <p class="text-muted mb-1">
+                                Enrollments
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                {{ enrollment_count|default(0) }}
+                            </h2>
+                        </div>
+
+                        <div class="dashboard-icon bg-info">
+                            <i class="bi bi-person-check"></i>
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="{{ url_for('admin_enrollments') }}"
+                        class="small text-decoration-none text-info"
+                    >
+                        View Enrollments →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Second Row Statistics -->
+    <div class="row g-4 mb-4">
+
+        <!-- Results -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <div class="dashboard-icon bg-secondary me-3">
+                            <i class="bi bi-bar-chart-line"></i>
+                        </div>
+
+                        <div>
+                            <h5 class="mb-0 fw-bold">
+                                Assessment Results
+                            </h5>
+
+                            <small class="text-muted">
+                                Employee assessment performance
+                            </small>
+                        </div>
+
+                    </div>
+
+                    <h2 class="fw-bold">
+                        {{ result_count|default(0) }}
+                    </h2>
+
+                    <a
+                        href="{{ url_for('admin_results') }}"
+                        class="btn btn-outline-primary btn-sm"
+                    >
+                        <i class="bi bi-eye"></i>
+                        View Results
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Certificates -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <div class="dashboard-icon bg-danger me-3">
+                            <i class="bi bi-award"></i>
+                        </div>
+
+                        <div>
+                            <h5 class="mb-0 fw-bold">
+                                Certificates Issued
+                            </h5>
+
+                            <small class="text-muted">
+                                Successfully completed programs
+                            </small>
+                        </div>
+
+                    </div>
+
+                    <h2 class="fw-bold">
+                        {{ certificate_count|default(0) }}
+                    </h2>
+
+                    <a
+                        href="{{ url_for('admin_certificates') }}"
+                        class="btn btn-outline-danger btn-sm"
+                    >
+                        <i class="bi bi-award"></i>
+                        View Certificates
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0 fw-bold">
+                <i class="bi bi-lightning-charge"></i>
+                Quick Actions
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-6 col-lg-3">
+                    <a
+                        href="{{ url_for('admin_employees') }}"
+                        class="btn btn-outline-primary w-100 py-3"
+                    >
+                        <i class="bi bi-person-plus fs-5"></i>
+                        <br>
+                        Add Employee
+                    </a>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <a
+                        href="{{ url_for('admin_trainers') }}"
+                        class="btn btn-outline-success w-100 py-3"
+                    >
+                        <i class="bi bi-person-badge fs-5"></i>
+                        <br>
+                        Add Trainer
+                    </a>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <a
+                        href="{{ url_for('admin_program_create') }}"
+                        class="btn btn-outline-warning w-100 py-3"
+                    >
+                        <i class="bi bi-plus-circle fs-5"></i>
+                        <br>
+                        Create Program
+                    </a>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <a
+                        href="{{ url_for('admin_enrollments') }}"
+                        class="btn btn-outline-info w-100 py-3"
+                    >
+                        <i class="bi bi-list-check fs-5"></i>
+                        <br>
+                        View Enrollments
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- System Overview -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0 fw-bold">
+                <i class="bi bi-info-circle"></i>
+                System Overview
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4 mb-3">
+                    <h6 class="fw-bold">
+                        <i class="bi bi-people text-primary"></i>
+                        User Management
+                    </h6>
+
+                    <p class="text-muted small">
+                        Manage employees and trainers,
+                        create accounts and maintain user records.
+                    </p>
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+                    <h6 class="fw-bold">
+                        <i class="bi bi-book text-warning"></i>
+                        Training Management
+                    </h6>
+
+                    <p class="text-muted small">
+                        Create training programs, assign trainers
+                        and monitor employee enrollments.
+                    </p>
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+                    <h6 class="fw-bold">
+                        <i class="bi bi-award text-danger"></i>
+                        Certification
+                    </h6>
+
+                    <p class="text-muted small">
+                        Monitor assessment results and issue
+                        certificates after successful completion.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
